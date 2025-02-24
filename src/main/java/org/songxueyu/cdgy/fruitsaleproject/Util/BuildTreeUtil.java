@@ -1,90 +1,43 @@
-package org.com.util;
+package org.songxueyu.cdgy.fruitsaleproject.Util;
 
-import org.com.Entity.Category;
-import org.com.Entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.songxueyu.cdgy.fruitsaleproject.DTO.CategoryDTO;
+
 
 import java.util.LinkedList;
 import java.util.List;
+
 /**
- * created by @Aaronzhu.Soton in 2022.03.14
+ * created by @Aaronzhu.Soton.ac.uk in 2023.11.11
  *
  * */
 public class BuildTreeUtil {
 
-    public final static List<User> BuildTreeForUser(List<User> Users){
-//        List<User> UsersList = new LinkedList<>();
-//
-//        for (User item: Users) {
-//
-//            if (item.getUser_parent().equals("0")){
-//                UsersList.add(item);
-//            }
-//        }
-//
-//        for (User item1 : UsersList){
-//            for (User item2: Users){
-//                String parent = String.valueOf(item1.getUser_id());
-//                if (parent.equals(item2.getUser_parent())){
-//                    try{
-//                        System.out.println("item1:"+item1+" "+"item2:"+item2);
-//                        item1.setChildren(item2 );
-//                        //item1.setChildren(item2);
-//                        System.out.println("item1:"+item1+" "+"item2:"+item2);
-//                    }catch (Exception e){
-//                        System.out.println("这里出错啦");
-//                    }
-//
-//                }
-//            }
-//        }
-//        return UsersList;
-        return null;
+    private static final Logger log = LoggerFactory.getLogger(BuildTreeUtil.class);
 
-    }
-    /**
-     *
-    public final static  List<Category>  BuildTreeForCategory(List<Category> categories){
-        List<Category> categoryList = new LinkedList<>();
-
-        for (Category item: categories) {
-            if (item.getCategory_parent()== 0){
-                categoryList.add(item);
-            }
-        }
-
-        for (Category item1 : categoryList){
-            for (Category item2: categories){
-                if (item1.getCategory_parent()==item2.getCategory_id()){
-                    try{
-                        item1.setChildren(item2 );
-                    }catch (Exception e){
-                        System.out.println("这里出错啦");
-                    }
-
-                }
-            }
+    public final static  List<CategoryDTO>  BuildTreeForCategoryDTO(List<CategoryDTO> categories ) {
+        List<CategoryDTO> categoryList = GetRoot(categories);
+        for (CategoryDTO categorydto:categoryList){
+            categorydto.setCategory_dto_children(BuildChildren(categories,categorydto.getCategory_dto_id()));
         }
         return categoryList;
     }
-     */
-    public final static  List<Category>  BuildTreeForCategory(List<Category> categories ) {
-        List<Category> categoryList = GetRoot(categories);
-        for (Category category:categoryList){
-            category.setChildren(BuildChildren(categories,category.getCategory_id()));
-        }
-        return categoryList;
-    }
-    public final static List<Category> BuildChildren(List<Category> categories,int category_id){
-        List<Category> categoryList = new LinkedList<>();
-        for (Category category:categories){
-            if (category.getCategory_parent()==category_id) {
-                categoryList.add(category);
+    /*
+    * @Params @categories:完整的categories @category_id:父类id
+    * @Description: 把categories中的类型通过递归的方式构建树状类型
+    * */
+    public final static List<CategoryDTO> BuildChildren(List<CategoryDTO> categories,String category_id){
+        List<CategoryDTO> categoryList = new LinkedList<>();
+        for (CategoryDTO categorydto:categories){
+            if (categorydto.getCategory_dto_parent().equals(category_id)) {
+                categoryList.add(categorydto);
             }
         }
-        for (Category category:categoryList){
-            category.setChildren(BuildChildren(categories,category.getCategory_id()));;
+        for (CategoryDTO categorydto:categoryList){
+            categorydto.setCategory_dto_children(BuildChildren(categories,categorydto.getCategory_dto_id()));;
         }
-        if (categoryList.size()==0){
+        if (categoryList.isEmpty()){
             return new LinkedList<>();
         }
         return categoryList;
@@ -93,10 +46,11 @@ public class BuildTreeUtil {
      *
      * @return :返回root
      * */
-    public final static List<Category> GetRoot(List<Category> categories  ){
-        List<Category> categoryList = new LinkedList<>();
-        for (Category category : categories){
-            if (category.getCategory_parent()==0) categoryList.add(category);
+    public final static List<CategoryDTO> GetRoot(List<CategoryDTO> categories  ){
+        List<CategoryDTO> categoryList = new LinkedList<>();
+        log.info("{}",categories);
+        for (CategoryDTO categorydto : categories){
+            if (categorydto.getCategory_dto_parent().equals("0")) categoryList.add(categorydto);
         }
         return categoryList;
     }

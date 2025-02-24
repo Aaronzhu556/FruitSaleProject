@@ -1,12 +1,15 @@
-package org.com.Service;
+package org.songxueyu.cdgy.fruitsaleproject.Service;
 
-import org.com.Entity.Article;
-import org.com.Entity.Reply;
-import org.com.Mapper.ArticleMapper;
-import org.com.Mapper.CommentMapper;
-import org.com.Mapper.ReplyMapper;
-import org.com.Mapper.UserMapper;
-import org.com.Service.Interface.ReplyService;
+import org.songxueyu.cdgy.fruitsaleproject.DTO.ArticleDTO;
+import org.songxueyu.cdgy.fruitsaleproject.DTO.ReplyDTO;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.Article;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.Reply;
+import org.songxueyu.cdgy.fruitsaleproject.Mapper.ArticleMapper;
+import org.songxueyu.cdgy.fruitsaleproject.Mapper.CommentMapper;
+import org.songxueyu.cdgy.fruitsaleproject.Mapper.ReplyMapper;
+import org.songxueyu.cdgy.fruitsaleproject.Mapper.UserMapper;
+import org.songxueyu.cdgy.fruitsaleproject.Service.Interface.ReplyService;
+import org.songxueyu.cdgy.fruitsaleproject.Util.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +30,13 @@ public class ReplyServiceImpl implements ReplyService {
 
 
     @Override
-    public int AddReply(Reply reply){
+    public int AddReply(ReplyDTO reply){
+        reply.setReply_dto_id(UuidUtil.getUuid());
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
-        reply.setReply_time(sdFormat.format(date));
-        int comment_id=reply.getReply_comment_id();
-        int article_id=commentMapper.GetCommentArticle_id(comment_id);
+        reply.setReply_dto_time(sdFormat.format(date));
+        String comment_id=reply.getReply_dto_comment_id();
+        String article_id=commentMapper.GetCommentArticle_id(comment_id);
         int replyNum = articleMapper.GetArticleReplyNum(article_id);
         replyNum = replyNum + 1;
         articleMapper.UpdateArticleReplyNum(replyNum,article_id);
@@ -43,9 +47,9 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public int DeleteReply(int reply_id){
-        int comment_id=replyMapper.GetReplyCommentId(reply_id);
-        int article_id=commentMapper.GetCommentArticle_id(comment_id);
+    public int DeleteReply(String reply_id){
+        String comment_id=replyMapper.GetReplyCommentId(reply_id);
+        String article_id=commentMapper.GetCommentArticle_id(comment_id);
         int replyNum = articleMapper.GetArticleReplyNum(article_id);
         replyNum = replyNum - 1;
         articleMapper.UpdateArticleReplyNum(replyNum,article_id);
@@ -54,24 +58,24 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public List<Reply> GetAllUnReadReply(String user_name){
-        List<Reply> replies = replyMapper.GetAllUnReadReply(user_name);
-        for (Reply reply:replies){
-            reply.setReply_from_img("/api"+userMapper.GetUserImgByName(reply.getReply_from()));
+    public List<ReplyDTO> GetAllUnReadReply(String user_name){
+        List<ReplyDTO> replies = replyMapper.GetAllUnReadReply(user_name);
+        for (ReplyDTO reply:replies){
+            reply.setReply_dto_from_img(userMapper.GetUserImgByName(reply.getReply_dto_from()));
         }
         return replies;
     }
 
     @Override
-    public Article ReadReply(int reply_id, int comment_id){
+    public ArticleDTO ReadReply(String reply_id, String comment_id){
         replyMapper.ReadReply("1",reply_id);
-        int article_id = commentMapper.GetCommentArticle_id(comment_id);
-        Article article = articleMapper.QueryArticleById(article_id);
-        article.setArticle_user_img("/api"+userMapper.GetUserImgByName(article.getArticle_user_name()));
+        String article_id = commentMapper.GetCommentArticle_id(comment_id);
+        ArticleDTO article = articleMapper.QueryArticleById(article_id);
+        article.setArticle_dto_user_img("/api"+userMapper.GetUserImgByName(article.getArticle_dto_user_name()));
         return article;
     }
     @Override
-    public void ReadAllReply(List<Integer> replyIdList){
-        for (Integer integer:replyIdList) replyMapper.ReadReply("1",integer);
+    public void ReadAllReply(List<String> replyIdList){
+        for (String string:replyIdList) replyMapper.ReadReply("1",string);
     }
 }

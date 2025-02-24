@@ -1,34 +1,49 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>IJPay让支付触手可及</title>
-    <style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邮件模板</title>
+    <!-- 以下样式可以确保在不同邮箱客户端中显示效果更一致 -->
+    <style type="text/css">
         body {
-            text-align: center;
-            margin-left: auto;
-            margin-right: auto;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
         #welcome {
-            text-align: center;
-            position: absolute;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        h3 {
+            color: #333;
+        }
+        h2 {
+            color: #555;
+        }
+        img {
+            display: block;
+            margin: 20px auto;
         }
     </style>
 </head>
 <body>
 <div id="welcome">
-    <h3>Welcome Use <span th:text="${project}"></span> -By <span th:text=" ${author}"></span></h3>
+    <h3>欢迎使用 <span th:text="${project}"></span> - 作者: <span th:text="${author}"></span></h3>
     <span th:text="${url}"></span>
     <div style="text-align: center; padding: 10px">
-
         <strong><h2><span th:text="${content}"></span></h2></strong>
-
     </div>
     <div style="text-align: center; padding: 4px">
-        Contact with us:
+        联系我们: 成都工业学院(宜宾校区)
     </div>
-    <img width="180px" height="180px"
-         src="http://ruft8y4n9.hn-bkt.clouddn.com/contactus.png">
+    <img width="180" height="180" src="https://yb.cdtu.edu.cn/images/xiaoyuanwangyedatu.jpg" alt="校园图片">
 </div>
 </body>
 </html>

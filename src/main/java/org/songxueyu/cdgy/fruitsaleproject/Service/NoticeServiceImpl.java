@@ -1,9 +1,10 @@
-package org.com.Service;
+package org.songxueyu.cdgy.fruitsaleproject.Service;
 
-import org.com.Entity.Notice;
-import org.com.Entity.QueryInfo;
-import org.com.Mapper.NoticeMapper;
-import org.com.Service.Interface.NoticeService;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.Notice;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.QueryInfo;
+import org.songxueyu.cdgy.fruitsaleproject.Mapper.NoticeMapper;
+import org.songxueyu.cdgy.fruitsaleproject.Service.Interface.NoticeService;
+import org.songxueyu.cdgy.fruitsaleproject.Util.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +23,16 @@ public class NoticeServiceImpl implements NoticeService {
         else return noticeMapper.GetNoticeByName(queryInfo.getQuerytext());
     }
     @Override
-    public int DeleteNotice(int notice_id){
+    public int DeleteNotice(String notice_id){
         return noticeMapper.DeleteNotice(notice_id);
     }
 
     @Override
     public int AddNotice(Notice notice){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         notice.setNotice_time(simpleDateFormat.format(date));
+        notice.setNotice_id(UuidUtil.getUuid());
         return noticeMapper.AddNotice(notice);
     }
 }

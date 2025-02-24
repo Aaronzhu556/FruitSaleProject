@@ -1,11 +1,12 @@
-package org.com.Controller;
+package org.songxueyu.cdgy.fruitsaleproject.Controller;
 
-import org.com.Entity.Article;
-import org.com.Entity.Reply;
-import org.com.MyResponse.MyResponse;
-import org.com.Service.Interface.ReplyService;
-import org.com.util.JwtUtil;
-import org.omg.PortableInterceptor.INACTIVE;
+import org.songxueyu.cdgy.fruitsaleproject.DTO.ArticleDTO;
+import org.songxueyu.cdgy.fruitsaleproject.DTO.ReplyDTO;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.Article;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.Reply;
+import org.songxueyu.cdgy.fruitsaleproject.Response.MyResponse;
+import org.songxueyu.cdgy.fruitsaleproject.Service.Interface.ReplyService;
+import org.songxueyu.cdgy.fruitsaleproject.Util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,48 +23,66 @@ public class ReplyController {
 
     @RequestMapping("/addnewreply")
     @ResponseBody
-    public MyResponse AddNewReply(@RequestBody Reply reply, @RequestHeader("Authorization")String token){
-        if (JwtUtil.VerifyToken(token)){
-            int i = replyService.AddReply(reply);
-            if (i!=0) return new MyResponse("200","回复成功","",null,"");
-            else return new MyResponse("201","回复失败","",null,"");
-        }else return new MyResponse("202","Jwt验证失败","",null,"");
+    public MyResponse AddNewReply(@RequestBody ReplyDTO reply ){
+
+        int i = replyService.AddReply(reply);
+        if (i!=0) return MyResponse.builder()
+                .code("200")
+                .msg("回复成功").build();
+        else return MyResponse.builder()
+                .code("201")
+                .msg("回复失败").build();
+
     }
 
     @RequestMapping("/deletereply")
     @ResponseBody
-    public MyResponse DeleteReply(@RequestParam int reply_id,@RequestHeader("Authorization")String token){
-        if (JwtUtil.VerifyToken(token)){
-            int i = replyService.DeleteReply(reply_id);
-            if (i!=0) return new MyResponse("200","删除成功","",null,"");
-            else return new MyResponse("201","删除失败","",null,"");
-        }else return new MyResponse("202","Jwt验证失败","",null,"");
+    public MyResponse DeleteReply(@RequestParam String reply_id ){
+        int i = replyService.DeleteReply(reply_id);
+        if (i!=0)
+            return MyResponse.builder()
+                    .code("200")
+                    .msg("删除成功")
+                    .build();
+        else
+            return MyResponse.builder()
+                    .code("201")
+                    .msg("删除失败").build();
 
     }
 
     @RequestMapping("/getunreadreply")
     @ResponseBody
-    public MyResponse GetAllUnReadReply(@RequestParam String user_name,@RequestHeader("Authorization")String token){
-        if (JwtUtil.VerifyToken(token)){
-            List<Reply> replies = replyService.GetAllUnReadReply(user_name);
-            return new MyResponse("200","获取成功","",replies,"");
-        }else return new MyResponse("201","Jwt验证失败","",null,"");
+    public MyResponse GetAllUnReadReply(@RequestParam String user_name ){
+
+        List<ReplyDTO> replies = replyService.GetAllUnReadReply(user_name);
+        return
+                MyResponse.builder()
+                        .code("200")
+                        .msg("获取成功")
+                        .object(replies).build();
+
     }
 
     @RequestMapping("/readreply")
     @ResponseBody
-    public MyResponse ReadReply(@RequestParam int reply_id,@RequestParam int reply_comment_id,@RequestHeader("Authorization")String token){
-        if (JwtUtil.VerifyToken(token)){
-            Article article = replyService.ReadReply(reply_id,reply_comment_id);
-            return new MyResponse("200","读取回复成功","",article,"");
-        }else return new MyResponse("201","Jwt验证失败","",null,"");
+    public MyResponse ReadReply(@RequestParam String reply_id,@RequestParam String reply_comment_id){
+        ArticleDTO article = replyService.ReadReply(reply_id,reply_comment_id);
+        return MyResponse.builder()
+                .code("200")
+                .msg("回复读取成功")
+                .object(article).build();
+
     }
     @ResponseBody
     @RequestMapping("/readall")
-    public MyResponse ReadAllReply(@RequestBody List<Integer> replyIdList,@RequestHeader("Authorization") String token){
-        if (JwtUtil.VerifyToken(token)) {
-            replyService.ReadAllReply(replyIdList);
-            return new MyResponse("200","已读全部成功","",null,"");
-        } else return new MyResponse("201","Jwt验证失败","",null,"");
+    public MyResponse ReadAllReply(@RequestBody List<String> replyIdList){
+
+        replyService.ReadAllReply(replyIdList);
+        return MyResponse.builder()
+                .code("200")
+                .msg("已读全部成功")
+                .build();
+
     }
 }

@@ -1,6 +1,6 @@
-package com.g12.cw1.Utils;
+package org.songxueyu.cdgy.fruitsaleproject.Util;
 
-import com.g12.cw1.Utils.Interface.EmailSender;
+import org.songxueyu.cdgy.fruitsaleproject.Util.Interface.EmailSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class EmailSenderUtil implements EmailSender {
     private JavaMailSender javaMailSender;
     @Autowired
     private TemplateEngine templateEngine;//注入模板引擎
-    @Value("G12ofSoton_Ecs@163.com")
+    @Value("FruitSaleGroup@163.com")
     private String from;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Override
@@ -44,9 +44,9 @@ public class EmailSenderUtil implements EmailSender {
     public void sendHtmlEmail(String to, String subject, String content) {
         try {
             Context context =new Context();
-            context.setVariable("project","Find a Service");
-            context.setVariable("author","G12ofSoton_Ecs");
-            context.setVariable("url","https://github.com/Aaronzhu556/Web_cw1_G12");
+            context.setVariable("project","水果销售平台");
+            context.setVariable("author","宋雪玉");
+            context.setVariable("url","https://github.com/Songxueyu/");
             context.setVariable("content",content);
             String emailContent=templateEngine.process("emailTemplate",context);
             MimeMessage message = javaMailSender.createMimeMessage();

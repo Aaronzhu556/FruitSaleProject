@@ -1,17 +1,14 @@
-package org.com.Controller;
+package org.songxueyu.cdgy.fruitsaleproject.Controller;
 
-import io.jsonwebtoken.Jwt;
-import org.com.Entity.Notice;
-import org.com.Entity.QueryInfo;
-import org.com.Entity.Seat;
-import org.com.MyResponse.MyResponse;
-import org.com.Service.Interface.NoticeService;
-import org.com.util.JwtUtil;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.Notice;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.QueryInfo;
+import org.songxueyu.cdgy.fruitsaleproject.Response.MyResponse;
+import org.songxueyu.cdgy.fruitsaleproject.Service.Interface.NoticeService;
+import org.songxueyu.cdgy.fruitsaleproject.Util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -22,28 +19,38 @@ public class NoticeController {
 
     @RequestMapping("/getallnotice")
     @ResponseBody
-    public MyResponse GetAllNotice(@RequestBody QueryInfo queryInfo, @RequestHeader("Authorization")String token){
-        if (JwtUtil.VerifyToken(token)){
-            List<Notice> notices = noticeService.GetAllNotice(queryInfo);
-            return new MyResponse("200","查询成功",String.valueOf(notices.size()),notices,"");
-        }
-        else  return new MyResponse("201","Jwt验证失败","",null,"");
+    public MyResponse GetAllNotice(@RequestBody QueryInfo queryInfo){
+
+        List<Notice> notices = noticeService.GetAllNotice(queryInfo);
+        return MyResponse.builder()
+                .code("200")
+                .msg("查询成功")
+                .object(notices)
+                .info(String.valueOf(notices.size())).build();
+
     }
     @RequestMapping("/deletenotice")
     @ResponseBody
-    public MyResponse DeleteNotice(@RequestParam int notice_id,@RequestHeader("Authorization")String token){
-        if (JwtUtil.VerifyToken(token)){
-            noticeService.DeleteNotice(notice_id);
-            return new MyResponse("200","删除成功","",null,"");
-        }else  return new MyResponse("201","Jwt验证成功","",null,"");
+    public MyResponse DeleteNotice(@RequestParam String notice_id){
+
+        noticeService.DeleteNotice(notice_id);
+        return MyResponse.builder()
+                .code("200")
+                .msg("删除成功")
+                .build();
+
+
     }
 
     @RequestMapping("/addnotice")
     @ResponseBody
-    public MyResponse AddNotice(@RequestBody Notice notice,@RequestHeader("Authorization")String token){
-        if (JwtUtil.VerifyToken(token)){
-            noticeService.AddNotice(notice);
-            return new MyResponse("200","添加成功","",null,"");
-        }else  return new MyResponse("201","Jwt验证成功","",null,"");
+    public MyResponse AddNotice(@RequestBody Notice notice){
+
+        noticeService.AddNotice(notice);
+        return MyResponse.builder()
+                .code("200")
+                .msg("添加成功")
+                .build();
+
     }
 }

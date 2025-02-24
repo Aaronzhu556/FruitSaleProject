@@ -1,4 +1,4 @@
-package org.com.util;
+package org.songxueyu.cdgy.fruitsaleproject.Util;
 
 import org.springframework.util.DigestUtils;
 
@@ -8,7 +8,7 @@ public class PasswordUtil {
      * */
     private PasswordUtil(){}
 
-    private final static String salt="password_md5_salt_createdByAaron_2021.02.08_bagayalu_!@#)(*$&%^";
+    private final static String salt="password_md5_salt_createdBySongXueyu_2024.11.27_guaponiang_!@#)(*$&%^";
 
     /*
      * 使用md5加密

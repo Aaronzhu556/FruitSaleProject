@@ -2,5 +2,18 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
+<mapper namespace="org.songxueyu.cdgy.fruitsaleproject.Mapper.NoticeMapper">
+    <insert id="AddNotice">
+        insert into t_notice(notice_id,notice_title,notice_content,notice_time) values(#{notice_id},#{notice_title},#{notice_content},#{notice_time})
+    </insert>
+    <delete id="DeleteNotice">
+        delete from t_notice where notice_id=#{notice_id}
+    </delete>
+
+    <select id="GetAllNotice" resultType="org.songxueyu.cdgy.fruitsaleproject.Entity.Notice">
+        select * from t_notice
+    </select>
+    <select id="GetNoticeByName" resultType="org.songxueyu.cdgy.fruitsaleproject.Entity.Notice">
+        select * from t_notice where notice_content  like '%' #{notice_content} '%'
+    </select>
 </mapper>

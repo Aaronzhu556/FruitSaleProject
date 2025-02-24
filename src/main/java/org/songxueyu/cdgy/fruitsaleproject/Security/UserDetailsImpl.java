@@ -1,11 +1,11 @@
-package com.graduationproject.recommendationplatform.Security;
+package org.songxueyu.cdgy.fruitsaleproject.Security;
 
-import com.graduationproject.recommendationplatform.Entity.User;
+import org.songxueyu.cdgy.fruitsaleproject.DTO.NamePasswordValidate;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    private User user;
+    private NamePasswordValidate namePasswordValidate;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>();
@@ -22,12 +22,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getUser_password();
+        return namePasswordValidate.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUser_account();
+        return namePasswordValidate.getName();
     }
 
     @Override

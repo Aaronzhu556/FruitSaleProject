@@ -2,5 +2,47 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
+<mapper namespace="org.songxueyu.cdgy.fruitsaleproject.Mapper.FruitMapper">
+    <insert id="addFruit" parameterType="org.songxueyu.cdgy.fruitsaleproject.Entity.Fruit">
+        insert into t_fruit(fruit_id, fruit_name, fruit_price, fruit_category, fruit_description, fruit_stock, fruit_unit, fruit_image, fruit_address)
+        VALUES(#{fruit_id},#{fruit_name},#{fruit_price},#{fruit_category},#{fruit_description},#{fruit_stock},#{fruit_unit},#{fruit_image},#{fruit_address})
+    </insert>
+    <update id="updateFruitStock">
+        update t_fruit
+        set fruit_stock = #{fruit_stock}
+        where fruit_id = #{fruit_id}
+    </update>
+    <update id="updateFruitStatus">
+        update t_fruit
+        set fruit_status=#{fruit_status}
+        where fruit_id = #{fruit_id}
+    </update>
+
+    <select id="getAllFruits" resultMap="fruitDTOMap">
+        select * from t_fruit
+    </select>
+    <select id="getAllFruitsByCate" resultMap="fruitDTOMap">
+        select * from t_fruit where fruit_category=#{fruit_category} and  fruit_status='1'
+    </select>
+    <select id="getAllFruitsByName" resultMap="fruitDTOMap">
+        select * from t_fruit where fruit_name like concat('%',#{fruit_name},'%') and  fruit_status='1'
+    </select>
+    <select id="getFruitById" resultMap="fruitDTOMap">
+        select * from t_fruit where fruit_id=#{fruit_id} and  fruit_status='1'
+    </select>
+    <select id="getFruitStockById" resultType="java.lang.Integer">
+        select fruit_stock from t_fruit where fruit_id=#{fruit_id} and fruit_status='1'
+    </select>
+    <resultMap id="fruitDTOMap" type="org.songxueyu.cdgy.fruitsaleproject.DTO.FruitDTO">
+        <result property="fruit_dto_id" column="fruit_id"></result>
+        <result property="fruit_dto_name" column="fruit_name"></result>
+        <result property="fruit_dto_price" column="fruit_price"></result>
+        <result property="fruit_dto_category" column="fruit_category"></result>
+        <result property="fruit_dto_description" column="fruit_description"></result>
+        <result property="fruit_dto_stock" column="fruit_stock"></result>
+        <result property="fruit_dto_unit" column="fruit_unit"></result>
+        <result property="fruit_dto_image" column="fruit_image"></result>
+        <result property="fruit_dto_address" column="fruit_address"></result>
+        <result property="fruit_dto_status" column="fruit_status"></result>
+    </resultMap>
 </mapper>

@@ -2,5 +2,49 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
+<mapper namespace="org.songxueyu.cdgy.fruitsaleproject.Mapper.ReplyMapper">
+    <!-- 查询所有回复通过回复评论 ID -->
+    <select id="GetAllReplyById" resultMap="replyDTOMap"> <!-- 请将 "your.package.Reply" 替换为实际的 Reply 类的全限定名 -->
+        select * from t_reply where reply_comment_id = #{reply_comment_id}
+    </select>
+
+    <!-- 插入新的回复 -->
+    <insert id="AddNewReply">
+        insert into t_reply(reply_id,reply_from, reply_to, reply_content, reply_time, reply_comment_id)
+        values(#{reply_dto_id},#{reply_dto_from},#{reply_dto_to},#{reply_dto_content},#{reply_dto_time},#{reply_dto_comment_id})
+    </insert>
+
+    <!-- 删除回复通过回复 ID -->
+    <delete id="DeleteReply">
+        delete from t_reply where reply_id = #{reply_id}
+    </delete>
+
+    <!-- 删除回复通过回复评论 ID -->
+    <delete id="DeleteReplyByComment">
+        delete from t_reply where reply_comment_id = #{reply_comment_id}
+    </delete>
+
+    <!-- 获取回复评论 ID 通过回复 ID -->
+    <select id="GetReplyCommentId" resultType="java.lang.String">
+        select reply_comment_id from t_reply where reply_id = #{reply_id}
+    </select>
+
+    <!-- 获取所有未读回复通过用户名 -->
+    <select id="GetAllUnReadReply" resultMap="replyDTOMap"> <!-- 请将 "your.package.Reply" 替换为实际的 Reply 类的全限定名 -->
+        select * from t_reply where reply_to = #{user_name} and reply_status='0'
+    </select>
+
+    <!-- 更新回复状态 -->
+    <update id="ReadReply">
+        update t_reply set reply_status = #{reply_status} where reply_id = #{reply_id}
+    </update>
+    <resultMap id="replyDTOMap" type="org.songxueyu.cdgy.fruitsaleproject.DTO.ReplyDTO">
+        <result property="reply_dto_id" column="reply_id"></result>
+        <result property="reply_dto_from" column="reply_from"></result>
+        <result property="reply_dto_to" column="reply_to"></result>
+        <result property="reply_dto_content" column="reply_content"></result>
+        <result property="reply_dto_time" column="reply_time"></result>
+        <result property="reply_dto_comment_id" column="reply_comment_id"></result>
+        <result property="reply_dto_status" column="reply_status"></result>
+    </resultMap>
 </mapper>

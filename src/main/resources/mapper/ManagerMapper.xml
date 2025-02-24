@@ -2,5 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
+<mapper namespace="org.songxueyu.cdgy.fruitsaleproject.Mapper.ManagerMapper">
+
+    <select id="getManagerByName" resultType="org.songxueyu.cdgy.fruitsaleproject.Entity.Manager">
+        select * from t_manager where manager_name=#{manager_name}
+    </select>
 </mapper>

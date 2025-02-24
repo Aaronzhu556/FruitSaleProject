@@ -2,5 +2,79 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
+<mapper namespace="org.songxueyu.cdgy.fruitsaleproject.Mapper.OrderMapper">
+
+    <insert id="insertOrder" parameterType="org.songxueyu.cdgy.fruitsaleproject.Entity.Order">
+        insert into t_order(order_id,order_fruit_id,order_price,order_create_time,order_user_name,order_address,order_user_email,order_fruit_num,order_fruit_price)
+        values(#{order_id},#{order_fruit_id},#{order_price},#{order_create_time},#{order_user_name},#{order_address},#{order_user_email},#{order_fruit_num},#{order_fruit_price})
+
+    </insert>
+    <insert id="addOrderReceiveTime">
+        update t_order
+        set order_receive_time =#{order_receive_time}
+        where order_id = #{order_id}
+    </insert>
+    <update id="addOrderComment">
+        update t_order
+        set order_star=#{order_star}, order_status='4',order_comment_content=#{order_comment_content},order_comment_time=#{order_comment_time}
+        where order_id=#{order_id}
+
+    </update>
+    <update id="updateOrderStatus">
+        update t_order
+        set order_status=#{order_status}
+        where order_id = #{order_id}
+    </update>
+    <select id="getAllStarByFruitId" resultType="java.lang.Integer">
+        select order_star from t_order where order_fruit_id=#{fruit_id} and order_status='4'
+    </select>
+    <select id="getOrdersByFruitId" resultMap="OrderMap">
+        select t_o.*,t_f.fruit_name as order_fruit_name
+        from t_order as t_o
+        left join t_fruit as t_f on t_o.order_fruit_id = t_f.fruit_id
+        where t_o.order_fruit_id=#{fruit_id} and t_o.order_status='4'
+    </select>
+    <select id="getOrderFruitNumByFruitId" resultType="java.lang.Integer">
+        select sum(order_fruit_num) from t_order where order_fruit_id=#{fruit_id}
+    </select>
+    <select id="getAllOrders" resultMap="OrderMap">
+        select t_o.*,t_f.fruit_name as order_fruit_name
+        from t_order as t_o
+        left join t_fruit as t_f on t_o.order_fruit_id = t_f.fruit_id;
+    </select>
+    <select id="getAllOrderByUser" resultMap="OrderMap">
+        select t_o.*,t_f.fruit_name as order_fruit_name
+        from t_order as t_o
+        left join t_fruit as t_f on t_o.order_fruit_id = t_f.fruit_id
+        where t_o.order_user_name=#{user_name}
+    </select>
+    <select id="getOrderWithoutComment" resultMap="OrderMap">
+        select t_o.*,t_f.fruit_name as order_fruit_name
+        from t_order  as t_o
+        left join songxueyu.t_fruit as t_f on t_o.order_fruit_id = t_f.fruit_id
+        where t_o.order_user_name=#{user_name} and t_o.order_status = '3'
+    </select>
+    <select id="getAllOrdersByFruitId" resultMap="OrderMap">
+        select t_o.*,t_f.fruit_name as order_fruit_name
+        from t_order as t_o
+        left join t_fruit as t_f on t_o.order_fruit_id = t_f.fruit_id
+        where t_o.order_fruit_id=#{fruit_id}
+    </select>
+    <resultMap id="OrderMap" type="org.songxueyu.cdgy.fruitsaleproject.Entity.Order">
+        <result property="order_id" column="order_id"></result>
+        <result property="order_fruit_id" column="order_fruit_id"></result>
+        <result property="order_price" column="order_price"></result>
+        <result property="order_status" column="order_status"></result>
+        <result property="order_create_time" column="order_create_time"></result>
+        <result property="order_comment_content" column="order_comment_content"></result>
+        <result property="order_user_name" column="order_user_name"></result>
+        <result property="order_address" column="order_address"></result>
+        <result property="order_star" column="order_star"></result>
+        <result property="order_user_email" column="order_user_email"></result>
+        <result property="order_fruit_num" column="order_fruit_num"></result>
+        <result property="order_fruit_price" column="order_fruit_price"></result>
+        <result property="order_comment_time" column="order_comment_time"></result>
+        <result property="order_receive_time" column="order_receive_time"></result>
+        <result property="order_fruit_name" column="oder_fruit_name"></result>
+    </resultMap>
 </mapper>

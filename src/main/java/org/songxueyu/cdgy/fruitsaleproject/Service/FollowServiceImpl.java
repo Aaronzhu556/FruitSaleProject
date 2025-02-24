@@ -1,7 +1,8 @@
-package org.com.Service;
+package org.songxueyu.cdgy.fruitsaleproject.Service;
 
-import org.com.Mapper.FollowMapper;
-import org.com.Service.Interface.FollowService;
+import org.songxueyu.cdgy.fruitsaleproject.Mapper.FollowMapper;
+import org.songxueyu.cdgy.fruitsaleproject.Service.Interface.FollowService;
+import org.songxueyu.cdgy.fruitsaleproject.Util.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,8 @@ public class FollowServiceImpl implements FollowService {
     }
     @Override
     public int FollowUser(String follow_user_from,String follow_user_to){
-        return followMapper.FollowUser(follow_user_from, follow_user_to);
+        String follow_id = UuidUtil.getUuid();
+        return followMapper.FollowUser(follow_id,follow_user_from, follow_user_to);
     }
 
     @Override

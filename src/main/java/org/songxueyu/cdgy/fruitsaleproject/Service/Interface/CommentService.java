@@ -1,15 +1,16 @@
-package org.com.Service.Interface;
+package org.songxueyu.cdgy.fruitsaleproject.Service.Interface;
 
-import org.com.Entity.Comment;
+import org.songxueyu.cdgy.fruitsaleproject.DTO.CommentDTO;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.Comment;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public interface CommentService {
-    List<Comment> QueryAllComment(int comment_article_id);
+    List<CommentDTO> QueryAllComment(String comment_article_id);
 
-    int AddNewComment(Comment comment);
+    int AddNewComment(CommentDTO comment);
 
-    int DeleteComment(int comment_id);
+    int DeleteComment(String comment_id);
 }

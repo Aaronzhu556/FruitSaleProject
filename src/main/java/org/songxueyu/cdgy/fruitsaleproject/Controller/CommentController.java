@@ -1,14 +1,14 @@
-package org.com.Controller;
+package org.songxueyu.cdgy.fruitsaleproject.Controller;
 
-import org.com.Entity.Comment;
-import org.com.MyResponse.MyResponse;
-import org.com.Service.Interface.CommentService;
-import org.com.util.JwtUtil;
+import org.songxueyu.cdgy.fruitsaleproject.DTO.CommentDTO;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.Comment;
+import org.songxueyu.cdgy.fruitsaleproject.Response.MyResponse;
+import org.songxueyu.cdgy.fruitsaleproject.Service.Interface.CommentService;
+import org.songxueyu.cdgy.fruitsaleproject.Util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -19,39 +19,50 @@ public class CommentController {
 
     @RequestMapping("/queryallcomment")
     @ResponseBody
-    public MyResponse QueryAllComment(@RequestParam int comment_article_id,@RequestParam int pagesize,@RequestParam int pagenum, @RequestHeader("Authorization") String token) {
-        if (JwtUtil.VerifyToken(token)) {
-            List<Comment> comments = commentService.QueryAllComment(comment_article_id);
-            if (!comments.isEmpty()) {
-                return new MyResponse("200", "加载成功", String.valueOf(comments.size()), comments, "");
-            }
-            return new MyResponse("201", "此帖子现在没有任何回复", "", null, "");
-
+    public MyResponse QueryAllComment(@RequestParam String comment_article_id,@RequestParam int pagesize,@RequestParam int pagenum, @RequestHeader("Authorization") String token) {
+        List<CommentDTO> comments = commentService.QueryAllComment(comment_article_id);
+        if (!comments.isEmpty()) {
+            return MyResponse.builder()
+                    .code("200")
+                    .msg("加载成功")
+                    .info(String.valueOf(comments.size()))
+                    .object(comments).build();
         }
-        return new MyResponse("202", "Jwt验证失败", "", null, "");
+        else
+            return MyResponse.builder()
+                    .code("201")
+                    .msg("此帖子现在没有任何回复")
+                    .build();
     }
 
 
     @RequestMapping("/addnewcomment")
     @ResponseBody
-    public MyResponse AddNewComment(@RequestBody Comment comment,@RequestHeader("Authorization") String token){
+    public MyResponse AddNewComment(@RequestBody CommentDTO comment,@RequestHeader("Authorization") String token){
         int flag=0;
-        if (JwtUtil.VerifyToken(token)){
-            flag = commentService.AddNewComment(comment);
-
-            if (flag!=0) return new MyResponse("200","回复成功","",null,"");
-            else return new MyResponse("201","添加回复失败,请重试","",null,"");
-        }else return new MyResponse("202","Jwt验证失败","",null,"");
+        flag = commentService.AddNewComment(comment);
+        if (flag!=0)
+            return MyResponse.builder()
+                    .code("200")
+                    .msg("回复成功").build();
+        else
+            return MyResponse.builder()
+                    .code("201")
+                    .msg("回复失败,请重试").build();
     }
 
 
     @RequestMapping("/deletecomment")
     @ResponseBody
-    public MyResponse DeleteComment(@RequestParam int comment_id,@RequestHeader("Authorization")String token ){
-        if (JwtUtil.VerifyToken(token)){
-            int i = commentService.DeleteComment(comment_id);
-            if (i!=0) return new MyResponse("200","删除成功","",null,"");
-            else return new MyResponse("201","删除失败","",null,"");
-        }else return new MyResponse("202","Jwt验证失败","",null,"");
+    public MyResponse DeleteComment(@RequestParam String comment_id){
+        int i = commentService.DeleteComment(comment_id);
+        if (i!=0)
+            return MyResponse.builder()
+                    .code("200")
+                    .msg("删除成功").build();
+        else
+            return MyResponse.builder()
+                    .code("201")
+                    .msg("删除失败").build();
     }
 }

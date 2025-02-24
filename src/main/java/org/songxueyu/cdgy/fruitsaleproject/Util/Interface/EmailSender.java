@@ -1,4 +1,4 @@
-package com.g12.cw1.Utils.Interface;
+package org.songxueyu.cdgy.fruitsaleproject.Util.Interface;
 
 import org.springframework.stereotype.Component;
 

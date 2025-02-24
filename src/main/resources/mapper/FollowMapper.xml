@@ -2,5 +2,24 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
+<mapper namespace="org.songxueyu.cdgy.fruitsaleproject.Mapper.FollowMapper">
+    <!-- 查询关注者 -->
+    <select id="GetUserFollowing" resultType="java.lang.String">
+        select follow_user_to from t_follow where follow_user_from = #{follow_user_from}
+    </select>
+
+    <!-- 查询粉丝 -->
+    <select id="GetUserFans" resultType="java.lang.String">
+        select follow_user_from from t_follow where follow_user_to = #{follow_user_to}
+    </select>
+
+    <!-- 插入关注记录 -->
+    <insert id="FollowUser">
+        insert into t_follow(follow_id,follow_user_from, follow_user_to) values(#{follow_id},#{follow_user_from},#{follow_user_to})
+    </insert>
+
+    <!-- 取消关注 -->
+    <delete id="UnFollowUser">
+        delete from t_follow where follow_user_from = #{follow_user_from} and follow_user_to = #{follow_user_to}
+    </delete>
 </mapper>

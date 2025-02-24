@@ -1,7 +1,7 @@
-package org.com.Service.Interface;
+package org.songxueyu.cdgy.fruitsaleproject.Service.Interface;
 
-import org.com.Entity.Notice;
-import org.com.Entity.QueryInfo;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.Notice;
+import org.songxueyu.cdgy.fruitsaleproject.Entity.QueryInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,6 +9,6 @@ import java.util.List;
 @Service
 public interface NoticeService {
     public List<Notice> GetAllNotice(QueryInfo queryInfo);
-    public int DeleteNotice(int notice_id);
+    public int DeleteNotice(String notice_id);
     public int AddNotice(Notice notice);
 }

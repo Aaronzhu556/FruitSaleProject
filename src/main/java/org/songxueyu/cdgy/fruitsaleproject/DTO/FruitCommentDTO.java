@@ -9,10 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FruitComment {
+public class FruitCommentDTO {
     private String fruit_comment_id;
     private String fruit_comment_content;
     private String fruit_comment_date;
     private String fruit_comment_user_name;
+    private String fruit_comment_user_img;
     private String fruit_id;
+    private int fruit_comment_star;
 }

@@ -1,10 +1,10 @@
-package org.com.Entity;
+package org.songxueyu.cdgy.fruitsaleproject.Entity;
 
 import lombok.Data;
 
 @Data
 public class Notice {
-    private int notice_id;
+    private String notice_id;
     private String notice_title;
     private String notice_content;
     private String notice_time;

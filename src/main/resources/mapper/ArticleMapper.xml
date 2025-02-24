@@ -2,5 +2,76 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
+<mapper namespace="org.songxueyu.cdgy.fruitsaleproject.Mapper.ArticleMapper">
+    <insert id="AddArticle">
+        insert into t_article(article_id,article_title,article_content,article_user_name,article_time)
+        values(#{article_dto_id},#{article_dto_title},#{article_dto_content},#{article_dto_user_name},#{article_dto_time})
+    </insert>
+    <insert id="AddArticleLike">
+        insert into t_like(like_id,like_article_id,like_user_name) values(#{like_id},#{like_article_id},#{like_user_name})
+    </insert>
+    <update id="UpdateArticleStar">
+        update t_article set article_star=#{article_star} where article_id=#{article_id}
+    </update>
+    <update id="UpdateArticleReplyNum">
+        update t_article set article_reply_num=#{article_reply_num} where article_id=#{article_id}
+    </update>
+    <update id="UpdateArticleClick">
+        update t_article set article_click=#{article_click} where article_id=#{article_id}
+    </update>
+    <delete id="DeleteArticle">
+        delete from t_article where article_id=#{article_id}
+    </delete>
+    <delete id="DeleteArticleLike">
+        delete from t_like where like_article_id=#{like_article_id} and like_user_name=#{like_user_name}
+    </delete>
+    <select id="QueryAllArticle" resultMap="articleDTOMap">
+        select * from t_article
+    </select>
+    <select id="QueryArticleById" resultMap="articleDTOMap">
+        select * from t_article where article_id=#{article_id}
+    </select>
+    <select id="QueryArticleByTitle" resultMap="articleDTOMap">
+        select * from t_article where article_title like concat('%',#{article_title},'%')
+    </select>
+    <select id="GetContentByID" resultType="java.lang.String">
+        select article_content from t_article where article_id=#{article_id}
+    </select>
+    <select id="GetArticleStar" resultType="java.lang.Integer">
+        select article_star from t_article where article_id=#{article_id}
+    </select>
+    <select id="GetArticleReplyNum" resultType="java.lang.Integer">
+        select article_reply_num from t_article where article_id=#{article_id}
+    </select>
+    <select id="GetAllArticleByUser"  resultMap="articleDTOMap">
+        select * from t_article where article_user_name=#{article_user_name}
+    </select>
+    <select id="GetArticleClick" resultType="java.lang.Integer">
+        select article_click from t_article where article_id=#{article_id}
+    </select>
+    <select id="GetAllArticleId" resultType="java.lang.String">
+        select article_id from t_article
+    </select>
+    <select id="GetSimilarArticle" resultMap="articleDTOMap">
+        select * from t_article where article_title like concat('%',#{article_title},'%')
+    </select>
+    <select id="GetTitleByID" resultType="java.lang.String">
+        select article_title from t_article where article_id=#{article_id}
+    </select>
+    <select id="GetRandomArticle" resultMap="articleDTOMap">
+        select * from t_article
+        order by RAND()
+        limit 5
+    </select>
+    <resultMap id="articleDTOMap" type="org.songxueyu.cdgy.fruitsaleproject.DTO.ArticleDTO">
+        <result property="article_dto_id" column="article_id"></result>
+        <result property="article_dto_title" column="article_title"></result>
+        <result property="article_dto_content" column="article_content"></result>
+        <result property="article_dto_reply_num" column="article_reply_num"></result>
+        <result property="article_dto_star" column="article_star"></result>
+        <result property="article_dto_reply" column="article_reply"></result>
+        <result property="article_dto_user_name" column="article_user_name"></result>
+        <result property="article_dto_time" column="article_time"></result>
+        <result property="article_dto_click" column="article_click"></result>
+    </resultMap>
 </mapper>
